@@ -109,42 +109,69 @@ const divisibleSumPairs = (n, k, ar) => {
 };
 
 const migratoryBirds = (arr) => {
-
-    const groupedBirds = []
-    const birdSpecies = [...new Set(arr)]
-    birdSpecies.forEach((specie) => groupedBirds.push(arr.filter( s => s === specie)))
-    const maxCount = groupedBirds.reduce((a,b) => a.length > b.length ? a : b).length    
-    const mostCommonBirds = groupedBirds.filter( ({length} ) => length === maxCount).flatMap(int => int)
-    return Math.min(...mostCommonBirds)
-  
+  const groupedBirds = [];
+  const birdSpecies = [...new Set(arr)];
+  birdSpecies.forEach((specie) =>
+    groupedBirds.push(arr.filter((s) => s === specie))
+  );
+  const maxCount = groupedBirds.reduce((a, b) => (a.length > b.length ? a : b))
+    .length;
+  const mostCommonBirds = groupedBirds
+    .filter(({ length }) => length === maxCount)
+    .flatMap((int) => int);
+  return Math.min(...mostCommonBirds);
 };
 
 // console.log(migratoryBirds([1,4,4,4,5,3]));
 
-
 const dayOfProgrammer = (year) => {
   const getCallendarSystem = (year) => {
-    return year === 1918 ? { calendar: 'Transition', year } : ( year <= 1917 ? { calendar: 'Julian', year } : { calendar: 'Georgian', year })
-  }
-  const GeorgialeapYear = (year) => year >= 1918 && year % 400 === 0 || year >= 1918 && (year % 4 === 0 && year % 100 !== 0)
-  const julianLeapYear = (year) => year >= 1700 && year <= 1917 && year % 4 === 0
-  const currentSystem = getCallendarSystem(year)
-  const { calendar } = currentSystem
+    return year === 1918
+      ? { calendar: "Transition", year }
+      : year <= 1917
+      ? { calendar: "Julian", year }
+      : { calendar: "Georgian", year };
+  };
+  const GeorgialeapYear = (year) =>
+    (year >= 1918 && year % 400 === 0) ||
+    (year >= 1918 && year % 4 === 0 && year % 100 !== 0);
+  const julianLeapYear = (year) =>
+    year >= 1700 && year <= 1917 && year % 4 === 0;
+  const currentSystem = getCallendarSystem(year);
+  const { calendar } = currentSystem;
   const dayOfProgrammerInJulianOrGeorian = (year) => {
-    if(julianLeapYear(year) || GeorgialeapYear(year) ){ return `12.09.${year}` }
-    return `13.09.${year}`
-  }
-   return calendar === 'Transition' ? `27.09.${year}` : dayOfProgrammerInJulianOrGeorian(year)
-  
-  }
-  
-  console.log(dayOfProgrammer(2021));
-  
-  
-  function bonAppetit(bill, k, b) {
-    const annasBill = (bill.reduce((a, b) => a + b, 0) - bill[k]) / 2;
-    annasBill === b ? console.log('Bon Appetit') : console.log(b - annasBill);
-  }
-  
-  // console.log(bonAppetit([3,10,2,9], 1, 12));
-  
+    if (julianLeapYear(year) || GeorgialeapYear(year)) {
+      return `12.09.${year}`;
+    }
+    return `13.09.${year}`;
+  };
+  return calendar === "Transition"
+    ? `27.09.${year}`
+    : dayOfProgrammerInJulianOrGeorian(year);
+};
+
+console.log(dayOfProgrammer(2021));
+
+function bonAppetit(bill, k, b) {
+  const annasBill = (bill.reduce((a, b) => a + b, 0) - bill[k]) / 2;
+  annasBill === b ? console.log("Bon Appetit") : console.log(b - annasBill);
+}
+
+// console.log(bonAppetit([3,10,2,9], 1, 12));
+
+/*****Sock Merchant****/
+function sockMerchant(n, ar) {
+  const arr = [...ar].sort((a, b) => a - b);
+  const set = [...new Set(arr)];
+  if (set.length === ar.length) return 0;
+  const res = set.map((i) => arr.filter((v) => v === i));
+  const pop = (arr) => {
+    arr.splice(0, 1);
+    return arr;
+  };
+  const getPairs = (arr) =>
+    arr.length % 2 === 0 ? arr.length : pop(arr).length;
+  const pairs = res.map(getPairs).filter((i) => i !== 0);
+  const countPairs = (arr) => arr.reduce((a, b) => a + b) / 2;
+  return countPairs(pairs);
+}
