@@ -175,3 +175,12 @@ function sockMerchant(n, ar) {
   const countPairs = (arr) => arr.reduce((a, b) => a + b) / 2;
   return countPairs(pairs);
 }
+
+/*****Drawing Book****/
+const pageCount = (n,p) => {
+  if(p === 1 || p === n || ( n % 2 !== 0 && n - p === 1))  return 0;
+  if ( n % 2 === 0 && n - p === 1) return 1;
+  const countFromFront = (int) => Math.round((int-1)/2);
+  const countFromBack = (int) => Math.floor((n-int)/2);
+  return Math.min(countFromFront(p),countFromBack(p));
+}
